@@ -1,0 +1,29 @@
+name: Main
+
+on:
+  push:
+    branches:
+      - '*'
+      - '*/*'
+      - '!master'
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'dev'
+      - run: |
+          flutter config --enable-macos-desktop
+          flutter packages get && flutter build macos
+
+  build-web:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'beta'
+      - run: flutter config --enable-web; cd notepad_core_example; flutter build web
